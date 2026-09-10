@@ -36,6 +36,7 @@
     <div class="admin-nav-group">
       <span class="admin-nav-label">Konfigurasi</span>
       <button class="admin-nav-btn" data-target="settings">⚙️ Settings</button>
+      <button class="admin-nav-btn" data-target="icons">🎨 Icons</button>
       <button class="admin-nav-btn" data-target="data">💾 Data Management</button>
     </div>
 
@@ -102,6 +103,25 @@
         <div class="form-field"><label>Judul CTA (bawah halaman)</label><input type="text" name="ctaTitle"></div>
         <div class="form-field"><label>Deskripsi CTA</label><textarea name="ctaDescription"></textarea></div>
         <div class="form-field"><label>Label Tombol CTA</label><input type="text" name="ctaButton"></div>
+
+        <hr style="border-color:var(--border-soft);margin:20px 0;">
+        <h3 style="font-size:1rem;margin-bottom:10px;">Banner Hero (di samping kanan judul)</h3>
+        <div class="form-field">
+          <label>Tipe Banner</label>
+          <select name="heroMediaType" id="heroMediaType">
+            <option value="shape">Shape default (kartu warna + tulisan)</option>
+            <option value="image">Gambar</option>
+            <option value="video">Video pendek</option>
+          </select>
+        </div>
+        <div class="form-field" id="heroMediaUrlField">
+          <label>File / URL Banner</label>
+          <input type="text" name="heroMediaUrl" placeholder="assets/images/banner.jpg atau tempel URL">
+          <input type="file" id="heroMediaFile" accept="image/*,video/*" style="margin-top:8px;">
+          <p style="color:var(--text-muted);font-size:0.82rem;margin-top:6px;">Kosongkan &amp; pilih "Shape default" untuk kembali ke tampilan bawaan.</p>
+        </div>
+        <div id="heroMediaPreviewWrap" style="margin-bottom:16px;"></div>
+
         <button type="submit" class="btn btn-primary">Simpan Homepage</button>
       </form>
     </section>
@@ -112,16 +132,57 @@
         <div><h1>Settings</h1><p>Informasi brand dan kontak yang dipakai di seluruh halaman.</p></div>
       </div>
       <form id="settingsForm" class="admin-form-card">
-        <div class="form-field"><label>Nama Brand</label><input type="text" name="brandName"></div>
-        <div class="form-field"><label>Nama Studio (untuk pesan WhatsApp)</label><input type="text" name="studioName"></div>
-        <div class="form-field"><label>Nomor WhatsApp (format 62xxxxxxxxxx)</label><input type="text" name="whatsappNumber"></div>
-        <div class="form-field"><label>Instagram URL</label><input type="text" name="instagramUrl"></div>
-        <div class="form-field"><label>Email</label><input type="email" name="email"></div>
-        <div class="form-field"><label>Lokasi</label><input type="text" name="location"></div>
-        <div class="form-field"><label>Deskripsi Footer</label><textarea name="footerDescription"></textarea></div>
-        <div class="form-field"><label>Teks Copyright</label><input type="text" name="copyrightText"></div>
-        <div class="form-field"><label>Simbol Mata Uang</label><input type="text" name="currencySymbol"></div>
+
+        <div class="admin-form-section">
+          <h3 class="admin-form-section-title">Identitas Brand</h3>
+          <p class="admin-form-section-desc">Logo ini menggantikan tulisan "FIXS.ARTS" di header &amp; footer semua halaman. Kosongkan URL-nya untuk kembali memakai tulisan biasa.</p>
+          <div class="logo-upload-row">
+            <div class="logo-preview-box" id="logoPreviewBox">
+              <span id="logoPreviewPlaceholder">FIXS<span style="color:var(--accent-solid);">.ARTS</span></span>
+              <img id="logoPreviewImg" style="display:none;" alt="Preview logo">
+            </div>
+            <div style="flex:1;">
+              <div class="form-field"><label>URL / Path Logo</label><input type="text" name="logoUrl" id="logoUrlInput" placeholder="assets/images/logo.png atau tempel URL"></div>
+              <input type="file" id="logoFileInput" accept="image/*">
+            </div>
+          </div>
+          <div class="form-field"><label>Nama Brand</label><input type="text" name="brandName"></div>
+          <div class="form-field"><label>Nama Studio (untuk pesan WhatsApp)</label><input type="text" name="studioName"></div>
+        </div>
+
+        <div class="admin-form-section">
+          <h3 class="admin-form-section-title">Kontak</h3>
+          <div class="form-grid-2">
+            <div class="form-field"><label>Nomor WhatsApp (format 62xxxxxxxxxx)</label><input type="text" name="whatsappNumber"></div>
+            <div class="form-field"><label>Email</label><input type="email" name="email"></div>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-field"><label>Instagram URL</label><input type="text" name="instagramUrl"></div>
+            <div class="form-field"><label>Lokasi</label><input type="text" name="location"></div>
+          </div>
+        </div>
+
+        <div class="admin-form-section">
+          <h3 class="admin-form-section-title">Footer &amp; Lainnya</h3>
+          <div class="form-field"><label>Deskripsi Footer</label><textarea name="footerDescription"></textarea></div>
+          <div class="form-grid-2">
+            <div class="form-field"><label>Teks Copyright</label><input type="text" name="copyrightText"></div>
+            <div class="form-field"><label>Simbol Mata Uang</label><input type="text" name="currencySymbol"></div>
+          </div>
+        </div>
+
         <button type="submit" class="btn btn-primary">Simpan Settings</button>
+      </form>
+    </section>
+
+    <!-- ================= ICONS ================= -->
+    <section class="admin-panel" data-panel="icons">
+      <div class="admin-panel-head">
+        <div><h1>Icons</h1><p>Ganti icon pencarian, keranjang, checkout, dan sosial media yang tampil di situs. Isi dengan emoji/teks, atau upload gambar sendiri (disarankan PNG/SVG latar transparan, persegi, ukuran kecil).</p></div>
+      </div>
+      <form id="iconsForm" class="admin-form-card">
+        <div id="iconFieldsContainer" class="icon-field-grid"></div>
+        <button type="submit" class="btn btn-primary" style="margin-top:16px;">Simpan Icons</button>
       </form>
     </section>
 
@@ -177,6 +238,14 @@
 
       <hr style="border-color:var(--border-soft);margin:20px 0;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <h3 style="font-size:1rem;">Galeri Gambar (slide di halaman detail)</h3>
+        <button type="button" class="btn btn-sm btn-outline" id="addServiceGalleryBtn">+ Tambah Gambar</button>
+      </div>
+      <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:10px;">Semua gambar di sini akan tampil sebagai slide/thumbnail yang bisa diklik di halaman detail layanan. Gambar utama di atas otomatis ikut jadi slide pertama.</p>
+      <div id="serviceGalleryEditorList"></div>
+
+      <hr style="border-color:var(--border-soft);margin:20px 0;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <h3 style="font-size:1rem;">Paket Harga</h3>
         <button type="button" class="btn btn-sm btn-outline" id="addPackageBtn">+ Tambah Paket</button>
       </div>
@@ -210,6 +279,13 @@
       <div class="form-field"><label>Deskripsi</label><textarea name="description"></textarea></div>
       <div class="form-field"><label>Layanan yang Digunakan (pisahkan dengan koma)</label><input type="text" name="servicesUsed" placeholder="Logo Design, Packaging Design"></div>
       <div class="form-field"><label style="display:flex;align-items:center;gap:8px;"><input type="checkbox" name="featured" style="width:auto;"> Tampilkan di homepage (Featured)</label></div>
+
+      <hr style="border-color:var(--border-soft);margin:20px 0;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <h3 style="font-size:1rem;">Galeri Gambar (slide di halaman detail proyek)</h3>
+        <button type="button" class="btn btn-sm btn-outline" id="addPortfolioGalleryBtn">+ Tambah Gambar</button>
+      </div>
+      <div id="portfolioGalleryEditorList"></div>
 
       <div class="modal-actions" style="margin-top:20px;">
         <button type="button" class="btn btn-outline btn-sm" id="closePortfolioModal">Batal</button>

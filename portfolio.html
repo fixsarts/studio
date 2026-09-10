@@ -22,7 +22,11 @@
       <li><a href="about.html">Tentang</a></li>
     </ul>
     <div class="nav-actions">
-      <a class="icon-btn" href="cart.html" aria-label="Keranjang">🛍️<span class="cart-count">0</span></a>
+      <form class="nav-search" action="services.html" method="GET" role="search">
+        <button type="submit" class="nav-search-icon" aria-label="Cari layanan"><span data-icon="search" data-default="🔍">🔍</span></button>
+        <input type="text" name="search" placeholder="Cari layanan..." aria-label="Cari layanan">
+      </form>
+      <a class="icon-btn" href="cart.html" aria-label="Keranjang"><span data-icon="cart" data-default="🛍️">🛍️</span><span class="cart-count">0</span></a>
       <button class="nav-toggle" id="navToggle" aria-label="Buka menu" aria-expanded="false"><span></span></button>
     </div>
   </nav>
@@ -40,7 +44,7 @@
     <div class="wrap">
       <div class="filter-bar">
         <div class="search-box">
-          <span>🔍</span>
+          <span data-icon="search" data-default="🔍">🔍</span>
           <input type="text" id="portfolioSearch" placeholder="Cari proyek atau klien...">
         </div>
         <div class="filter-row">
@@ -73,9 +77,9 @@
     <div class="footer-brand"><span class="brand">FIXS<span>.ARTS</span></span><p data-setting="footerDescription"></p></div>
     <div class="footer-col"><h4>Jelajahi</h4><ul><li><a href="services.html">Layanan</a></li><li><a href="portfolio.html">Portfolio</a></li><li><a href="about.html">Tentang</a></li></ul></div>
     <div class="footer-col"><h4>Kontak</h4><ul>
-      <li><a data-setting-href="whatsapp" href="#">WhatsApp</a></li>
-      <li><a data-setting-href="email" href="#" data-setting="email"></a></li>
-      <li><a data-setting-href="instagramUrl" href="#" target="_blank" rel="noopener">Instagram</a></li>
+      <li><span data-icon="whatsapp" data-default="💬"></span> <a data-setting-href="whatsapp" href="#">WhatsApp</a></li>
+      <li><span data-icon="email" data-default="✉️"></span> <a data-setting-href="email" href="#" data-setting="email"></a></li>
+      <li><span data-icon="instagram" data-default="📷"></span> <a data-setting-href="instagramUrl" href="#" target="_blank" rel="noopener">Instagram</a></li>
     </ul></div>
     <div class="footer-col"><h4>Lokasi</h4><ul><li data-setting="location"></li></ul></div>
   </div>

@@ -23,8 +23,12 @@
       <li><a href="about.html">Tentang</a></li>
     </ul>
     <div class="nav-actions">
+      <form class="nav-search" action="services.html" method="GET" role="search">
+        <button type="submit" class="nav-search-icon" aria-label="Cari layanan"><span data-icon="search" data-default="🔍">🔍</span></button>
+        <input type="text" name="search" placeholder="Cari layanan..." aria-label="Cari layanan">
+      </form>
       <a class="icon-btn" href="cart.html" aria-label="Keranjang">
-        🛍️<span class="cart-count">0</span>
+        <span data-icon="cart" data-default="🛍️">🛍️</span><span class="cart-count">0</span>
       </a>
       <button class="nav-toggle" id="navToggle" aria-label="Buka menu" aria-expanded="false"><span></span></button>
     </div>
@@ -50,7 +54,7 @@
           <div class="stat"><b>9</b><span>Jenis layanan</span></div>
         </div>
       </div>
-      <div class="hero-visual">
+      <div class="hero-visual" id="heroVisual">
         <div class="value-card" style="aspect-ratio:1/1;display:flex;flex-direction:column;justify-content:center;background:var(--accent-grad);border:none;">
           <span style="font-family:var(--font-display);font-size:1.4rem;color:#fff;">Fixs.Arts</span>
           <span style="color:rgba(255,255,255,0.85);font-size:0.9rem;margin-top:8px;">Studio Desain Kreatif</span>
@@ -177,9 +181,9 @@
     <div class="footer-col">
       <h4>Kontak</h4>
       <ul>
-        <li><a data-setting-href="whatsapp" href="#">WhatsApp</a></li>
-        <li><a data-setting-href="email" href="#" data-setting="email">hello@fixsarts.studio</a></li>
-        <li><a data-setting-href="instagramUrl" href="#" target="_blank" rel="noopener">Instagram</a></li>
+        <li><span data-icon="whatsapp" data-default="💬"></span> <a data-setting-href="whatsapp" href="#">WhatsApp</a></li>
+        <li><span data-icon="email" data-default="✉️"></span> <a data-setting-href="email" href="#" data-setting="email">hello@fixsarts.studio</a></li>
+        <li><span data-icon="instagram" data-default="📷"></span> <a data-setting-href="instagramUrl" href="#" target="_blank" rel="noopener">Instagram</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -199,7 +203,9 @@
 <script src="js/cart.js"></script>
 <script src="js/app.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", async () => {
+    await StorageManager.init();
+
     const settings = StorageManager.loadSettings();
     const hp = settings.homepage;
     document.getElementById("hpEyebrow").textContent = hp.eyebrow;
@@ -210,6 +216,15 @@
     document.getElementById("hpCtaTitle").textContent = hp.ctaTitle;
     document.getElementById("hpCtaDescription").textContent = hp.ctaDescription;
     document.getElementById("hpCtaBtn").textContent = hp.ctaButton;
+
+    // ---- hero banner: image / video / default shape ----
+    const heroVisual = document.getElementById("heroVisual");
+    if (hp.heroMediaType === "image" && hp.heroMediaUrl){
+      heroVisual.innerHTML = `<img src="${Utils.escapeHtml(hp.heroMediaUrl)}" alt="${Utils.escapeHtml(hp.title)}" class="hero-banner-media" onerror="this.parentElement.innerHTML=this.parentElement.dataset.fallback">`;
+    } else if (hp.heroMediaType === "video" && hp.heroMediaUrl){
+      heroVisual.innerHTML = `<video src="${Utils.escapeHtml(hp.heroMediaUrl)}" class="hero-banner-media" autoplay muted loop playsinline></video>`;
+    }
+    // else: leave the default gradient shape card as-is
 
     const services = StorageManager.loadServices().filter(s => s.featured).slice(0,3);
     document.getElementById("featuredServicesGrid").innerHTML = services.map(s => `
