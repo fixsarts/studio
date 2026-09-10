@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Fixs.Arts Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+
+<div class="admin-notice">
+  ⚠️ Panel ini adalah content manager lokal di browser (localStorage) — bukan sistem login/autentikasi yang aman. Jangan gunakan untuk data sensitif.
+</div>
+
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <span class="brand">FIXS<span>.ARTS</span></span>
+
+    <div class="admin-nav-group">
+      <span class="admin-nav-label">Dashboard</span>
+      <button class="admin-nav-btn active" data-target="dashboard">📊 Dashboard</button>
+    </div>
+
+    <div class="admin-nav-group">
+      <span class="admin-nav-label">Konten</span>
+      <button class="admin-nav-btn" data-target="services">🧩 Layanan</button>
+      <button class="admin-nav-btn" data-target="portfolio">🖼️ Portfolio</button>
+      <button class="admin-nav-btn" data-target="homepage">🏠 Homepage</button>
+    </div>
+
+    <div class="admin-nav-group">
+      <span class="admin-nav-label">Konfigurasi</span>
+      <button class="admin-nav-btn" data-target="settings">⚙️ Settings</button>
+      <button class="admin-nav-btn" data-target="data">💾 Data Management</button>
+    </div>
+
+    <div class="admin-nav-group" style="margin-top:auto;">
+      <a href="index.html" class="admin-nav-btn" style="text-decoration:none;">↩ Lihat Situs</a>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+
+    <!-- ================= DASHBOARD ================= -->
+    <section class="admin-panel active" data-panel="dashboard">
+      <div class="admin-panel-head">
+        <div><h1>Dashboard</h1><p>Ringkasan konten website Fixs.Arts Studio.</p></div>
+      </div>
+      <div class="admin-stats-grid">
+        <div class="admin-stat-card"><div class="stat-label">Total Layanan</div><div class="stat-value" id="statServices">0</div></div>
+        <div class="admin-stat-card"><div class="stat-label">Total Kategori</div><div class="stat-value" id="statCategories">0</div></div>
+        <div class="admin-stat-card"><div class="stat-label">Total Proyek Portfolio</div><div class="stat-value" id="statPortfolio">0</div></div>
+        <div class="admin-stat-card"><div class="stat-label">Layanan Unggulan</div><div class="stat-value" id="statFeatured">0</div></div>
+        <div class="admin-stat-card"><div class="stat-label">Nomor WhatsApp Aktif</div><div class="stat-value" id="statWhatsapp" style="font-size:1.1rem;">-</div></div>
+      </div>
+    </section>
+
+    <!-- ================= SERVICES ================= -->
+    <section class="admin-panel" data-panel="services">
+      <div class="admin-panel-head">
+        <div><h1>Layanan</h1><p>Kelola layanan yang tampil di katalog publik. Geser baris pakai ikon ⠿ untuk mengubah urutan tampil.</p></div>
+        <button class="btn btn-primary btn-sm" id="addServiceBtn">+ Tambah Layanan</button>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead><tr><th></th><th>Gambar</th><th>Nama</th><th>Kategori</th><th>Harga</th><th>Unggulan</th><th>Aksi</th></tr></thead>
+          <tbody id="servicesTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= PORTFOLIO ================= -->
+    <section class="admin-panel" data-panel="portfolio">
+      <div class="admin-panel-head">
+        <div><h1>Portfolio</h1><p>Kelola proyek yang tampil di halaman portfolio publik. Geser baris pakai ikon ⠿ untuk mengubah urutan tampil.</p></div>
+        <button class="btn btn-primary btn-sm" id="addPortfolioBtn">+ Tambah Proyek</button>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead><tr><th></th><th>Gambar</th><th>Judul</th><th>Kategori</th><th>Unggulan</th><th>Aksi</th></tr></thead>
+          <tbody id="portfolioTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= HOMEPAGE ================= -->
+    <section class="admin-panel" data-panel="homepage">
+      <div class="admin-panel-head">
+        <div><h1>Homepage</h1><p>Ubah teks hero dan CTA yang tampil di halaman depan.</p></div>
+      </div>
+      <form id="homepageForm" class="admin-form-card">
+        <div class="form-field"><label>Eyebrow (label kecil di atas judul)</label><input type="text" name="eyebrow"></div>
+        <div class="form-field"><label>Judul Hero</label><textarea name="title"></textarea></div>
+        <div class="form-field"><label>Deskripsi Hero</label><textarea name="description"></textarea></div>
+        <div class="form-field"><label>Label Tombol Utama</label><input type="text" name="primaryButton"></div>
+        <div class="form-field"><label>Label Tombol Sekunder</label><input type="text" name="secondaryButton"></div>
+        <div class="form-field"><label>Judul CTA (bawah halaman)</label><input type="text" name="ctaTitle"></div>
+        <div class="form-field"><label>Deskripsi CTA</label><textarea name="ctaDescription"></textarea></div>
+        <div class="form-field"><label>Label Tombol CTA</label><input type="text" name="ctaButton"></div>
+        <button type="submit" class="btn btn-primary">Simpan Homepage</button>
+      </form>
+    </section>
+
+    <!-- ================= SETTINGS ================= -->
+    <section class="admin-panel" data-panel="settings">
+      <div class="admin-panel-head">
+        <div><h1>Settings</h1><p>Informasi brand dan kontak yang dipakai di seluruh halaman.</p></div>
+      </div>
+      <form id="settingsForm" class="admin-form-card">
+        <div class="form-field"><label>Nama Brand</label><input type="text" name="brandName"></div>
+        <div class="form-field"><label>Nama Studio (untuk pesan WhatsApp)</label><input type="text" name="studioName"></div>
+        <div class="form-field"><label>Nomor WhatsApp (format 62xxxxxxxxxx)</label><input type="text" name="whatsappNumber"></div>
+        <div class="form-field"><label>Instagram URL</label><input type="text" name="instagramUrl"></div>
+        <div class="form-field"><label>Email</label><input type="email" name="email"></div>
+        <div class="form-field"><label>Lokasi</label><input type="text" name="location"></div>
+        <div class="form-field"><label>Deskripsi Footer</label><textarea name="footerDescription"></textarea></div>
+        <div class="form-field"><label>Teks Copyright</label><input type="text" name="copyrightText"></div>
+        <div class="form-field"><label>Simbol Mata Uang</label><input type="text" name="currencySymbol"></div>
+        <button type="submit" class="btn btn-primary">Simpan Settings</button>
+      </form>
+    </section>
+
+    <!-- ================= DATA MANAGEMENT ================= -->
+    <section class="admin-panel" data-panel="data">
+      <div class="admin-panel-head">
+        <div><h1>Data Management</h1><p>Backup, pindahkan, atau kembalikan data katalog kamu.</p></div>
+      </div>
+      <div class="admin-form-card">
+        <h3 style="margin-bottom:10px;">Export Data</h3>
+        <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:16px;">Unduh seluruh data (services, portfolio, settings) sebagai file JSON untuk backup atau dipindahkan.</p>
+        <button class="btn btn-outline" id="exportDataBtn">⬇ Export ke JSON</button>
+      </div>
+      <div class="admin-form-card" style="margin-top:20px;">
+        <h3 style="margin-bottom:10px;">Import Data</h3>
+        <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:16px;">Muat file JSON hasil export sebelumnya. Data yang tidak valid akan ditolak otomatis.</p>
+        <input type="file" id="importDataInput" accept="application/json">
+      </div>
+      <div class="admin-form-card" style="margin-top:20px;">
+        <h3 style="margin-bottom:10px;color:#ff6b6b;">Reset ke Data Default</h3>
+        <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:16px;">Mengembalikan semua data ke katalog contoh bawaan. Tindakan ini akan menimpa perubahan yang sudah kamu buat.</p>
+        <button class="btn btn-outline admin-danger" id="resetDataBtn">Reset ke Default</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ================= SERVICE EDITOR MODAL ================= -->
+<div class="modal-overlay admin-modal" id="serviceModal">
+  <div class="modal-box">
+    <h3 id="serviceModalTitle">Tambah Layanan</h3>
+    <form id="serviceForm">
+      <img class="admin-image-preview" id="serviceImagePreview" src="assets/images/placeholder.jpg" alt="Preview gambar layanan">
+      <div class="form-field">
+        <label>Gambar Utama</label>
+        <input type="text" name="image" placeholder="assets/images/nama-file.jpg atau tempel URL">
+        <input type="file" id="serviceImageFile" accept="image/*" style="margin-top:8px;">
+      </div>
+      <div class="form-field"><label>Judul Layanan</label><input type="text" name="title" required></div>
+      <div class="form-field"><label>Kategori</label><input type="text" name="category" placeholder="Branding, Print Design, dll" required></div>
+      <div class="form-field"><label>Deskripsi Singkat</label><input type="text" name="shortDescription"></div>
+      <div class="form-field"><label>Deskripsi Lengkap</label><textarea name="description"></textarea></div>
+      <div class="pe-grid">
+        <div class="form-field"><label>Harga Dasar</label><input type="number" name="price" min="0"></div>
+        <div class="form-field"><label>Label Harga</label><input type="text" name="priceLabel" placeholder="Mulai dari"></div>
+      </div>
+      <div class="form-field"><label>Tags (pisahkan dengan koma)</label><input type="text" name="tags" placeholder="logo, branding, identitas"></div>
+      <div class="form-field" style="display:flex;gap:24px;">
+        <label style="display:flex;align-items:center;gap:8px;"><input type="checkbox" name="featured" style="width:auto;"> Featured</label>
+        <label style="display:flex;align-items:center;gap:8px;"><input type="checkbox" name="active" style="width:auto;"> Aktif</label>
+      </div>
+
+      <hr style="border-color:var(--border-soft);margin:20px 0;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <h3 style="font-size:1rem;">Paket Harga</h3>
+        <button type="button" class="btn btn-sm btn-outline" id="addPackageBtn">+ Tambah Paket</button>
+      </div>
+      <div id="packageEditorList"></div>
+
+      <div class="modal-actions" style="margin-top:20px;">
+        <button type="button" class="btn btn-outline btn-sm" id="closeServiceModal">Batal</button>
+        <button type="submit" class="btn btn-primary btn-sm">Simpan Layanan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ================= PORTFOLIO EDITOR MODAL ================= -->
+<div class="modal-overlay admin-modal" id="portfolioModal">
+  <div class="modal-box">
+    <h3 id="portfolioModalTitle">Tambah Proyek</h3>
+    <form id="portfolioForm">
+      <img class="admin-image-preview" id="portfolioImagePreview" src="assets/portfolio/placeholder.jpg" alt="Preview gambar proyek">
+      <div class="form-field">
+        <label>Gambar Utama</label>
+        <input type="text" name="image" placeholder="assets/portfolio/nama-file.jpg atau tempel URL">
+        <input type="file" id="portfolioImageFile" accept="image/*" style="margin-top:8px;">
+      </div>
+      <div class="form-field"><label>Judul Proyek</label><input type="text" name="title" required></div>
+      <div class="form-field"><label>Kategori</label><input type="text" name="category" required></div>
+      <div class="pe-grid">
+        <div class="form-field"><label>Klien</label><input type="text" name="client"></div>
+        <div class="form-field"><label>Tahun</label><input type="text" name="year"></div>
+      </div>
+      <div class="form-field"><label>Deskripsi</label><textarea name="description"></textarea></div>
+      <div class="form-field"><label>Layanan yang Digunakan (pisahkan dengan koma)</label><input type="text" name="servicesUsed" placeholder="Logo Design, Packaging Design"></div>
+      <div class="form-field"><label style="display:flex;align-items:center;gap:8px;"><input type="checkbox" name="featured" style="width:auto;"> Tampilkan di homepage (Featured)</label></div>
+
+      <div class="modal-actions" style="margin-top:20px;">
+        <button type="button" class="btn btn-outline btn-sm" id="closePortfolioModal">Batal</button>
+        <button type="submit" class="btn btn-primary btn-sm">Simpan Proyek</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
