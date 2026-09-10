@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detail Layanan — Fixs.Arts Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<header class="navbar">
+  <nav class="wrap">
+    <a class="brand" href="index.html">FIXS<span>.ARTS</span></a>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="services.html">Layanan</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="about.html">Tentang</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a class="icon-btn" href="cart.html" aria-label="Keranjang">🛍️<span class="cart-count">0</span></a>
+      <button class="nav-toggle" id="navToggle" aria-label="Buka menu" aria-expanded="false"><span></span></button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="wrap">
+    <div id="serviceDetailRoot" class="detail-grid">
+      <div class="detail-gallery">
+        <div class="main-img"><img id="mainImage" alt=""></div>
+        <div class="thumb-row" id="thumbRow"></div>
+      </div>
+      <div class="detail-info">
+        <span class="cat" id="serviceCategory"></span>
+        <h1 id="serviceTitle"></h1>
+        <p class="desc" id="serviceDescription"></p>
+        <div class="price-tag" id="priceTag"></div>
+
+        <div class="package-list" id="packageList"></div>
+
+        <div class="qty-row">
+          <span style="color:var(--text-muted);font-size:0.9rem;">Jumlah</span>
+          <div class="qty-control">
+            <button id="qtyDec" type="button" aria-label="Kurangi jumlah">−</button>
+            <input type="text" id="qtyInput" value="1" inputmode="numeric" aria-label="Jumlah">
+            <button id="qtyInc" type="button" aria-label="Tambah jumlah">+</button>
+          </div>
+        </div>
+
+        <div class="detail-cta">
+          <button class="btn btn-outline" id="addToCartBtn">+ Tambah ke Keranjang</button>
+          <button class="btn btn-primary" id="orderNowBtn">Pesan Sekarang</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" id="serviceNotFound" style="display:none;margin:60px 0;">
+      <h3>Layanan tidak ditemukan</h3>
+      <p>Layanan yang kamu cari mungkin sudah tidak tersedia.</p>
+      <a class="btn btn-outline" style="margin-top:20px;" href="services.html">Kembali ke Katalog</a>
+    </div>
+  </div>
+
+  <section id="relatedSection">
+    <div class="wrap">
+      <div class="sec-head"><h2>Layanan terkait</h2></div>
+      <div class="related-row" id="relatedGrid"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div class="footer-brand"><span class="brand">FIXS<span>.ARTS</span></span><p data-setting="footerDescription"></p></div>
+    <div class="footer-col"><h4>Jelajahi</h4><ul><li><a href="services.html">Layanan</a></li><li><a href="portfolio.html">Portfolio</a></li><li><a href="about.html">Tentang</a></li></ul></div>
+    <div class="footer-col"><h4>Kontak</h4><ul>
+      <li><a data-setting-href="whatsapp" href="#">WhatsApp</a></li>
+      <li><a data-setting-href="email" href="#" data-setting="email"></a></li>
+      <li><a data-setting-href="instagramUrl" href="#" target="_blank" rel="noopener">Instagram</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Lokasi</h4><ul><li data-setting="location"></li></ul></div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span data-setting="copyrightText"></span>
+    <span>Dibuat dengan HTML, CSS & JavaScript murni.</span>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/app.js"></script>
+<script src="js/service-detail.js"></script>
+</body>
+</html>

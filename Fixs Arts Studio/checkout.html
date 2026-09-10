@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — Fixs.Arts Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<header class="navbar">
+  <nav class="wrap">
+    <a class="brand" href="index.html">FIXS<span>.ARTS</span></a>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="services.html">Layanan</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="about.html">Tentang</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a class="icon-btn" href="cart.html" aria-label="Keranjang">🛍️<span class="cart-count">0</span></a>
+      <button class="nav-toggle" id="navToggle" aria-label="Buka menu" aria-expanded="false"><span></span></button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="sec-head" style="margin-top:40px;">
+      <h2>Checkout</h2>
+      <p>Lengkapi data kamu, lalu pesan langsung lewat WhatsApp.</p>
+    </div>
+
+    <div class="cart-layout">
+      <form id="checkoutForm" novalidate>
+        <div class="form-field">
+          <label for="customerName">Nama Lengkap</label>
+          <input type="text" id="customerName" name="name" placeholder="Nama kamu">
+          <div class="field-error"></div>
+        </div>
+        <div class="form-field">
+          <label for="customerWhatsapp">Nomor WhatsApp</label>
+          <input type="tel" id="customerWhatsapp" name="whatsapp" placeholder="08xxxxxxxxxx">
+          <div class="field-error"></div>
+        </div>
+        <div class="form-field">
+          <label for="customerEmail">Email (opsional)</label>
+          <input type="email" id="customerEmail" name="email" placeholder="nama@email.com">
+        </div>
+        <div class="form-field">
+          <label for="customerBrief">Brief / Kebutuhan Desain</label>
+          <textarea id="customerBrief" name="brief" placeholder="Ceritakan gambaran desain yang kamu inginkan..."></textarea>
+          <div class="field-error"></div>
+        </div>
+        <div class="form-field">
+          <label for="customerNotes">Catatan Tambahan (opsional)</label>
+          <textarea id="customerNotes" name="notes" placeholder="Deadline, referensi, atau catatan lain..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Pesan via WhatsApp</button>
+      </form>
+
+      <aside class="summary-box" id="checkoutSummary"></aside>
+    </div>
+
+    <div class="empty-state" id="checkoutEmptyState" style="display:none;margin-bottom:60px;">
+      <h3>Keranjang kamu masih kosong</h3>
+      <p>Silakan pilih layanan terlebih dahulu sebelum checkout.</p>
+      <a class="btn btn-primary" style="margin-top:20px;" href="services.html">Lihat Layanan</a>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div class="footer-brand"><span class="brand">FIXS<span>.ARTS</span></span><p data-setting="footerDescription"></p></div>
+    <div class="footer-col"><h4>Jelajahi</h4><ul><li><a href="services.html">Layanan</a></li><li><a href="portfolio.html">Portfolio</a></li><li><a href="about.html">Tentang</a></li></ul></div>
+    <div class="footer-col"><h4>Kontak</h4><ul>
+      <li><a data-setting-href="whatsapp" href="#">WhatsApp</a></li>
+      <li><a data-setting-href="email" href="#" data-setting="email"></a></li>
+      <li><a data-setting-href="instagramUrl" href="#" target="_blank" rel="noopener">Instagram</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Lokasi</h4><ul><li data-setting="location"></li></ul></div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span data-setting="copyrightText"></span>
+    <span>Dibuat dengan HTML, CSS & JavaScript murni.</span>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/app.js"></script>
+<script src="js/checkout.js"></script>
+</body>
+</html>

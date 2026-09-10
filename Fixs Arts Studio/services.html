@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Layanan — Fixs.Arts Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<header class="navbar">
+  <nav class="wrap">
+    <a class="brand" href="index.html">FIXS<span>.ARTS</span></a>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="services.html">Layanan</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="about.html">Tentang</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a class="icon-btn" href="cart.html" aria-label="Keranjang">🛍️<span class="cart-count">0</span></a>
+      <button class="nav-toggle" id="navToggle" aria-label="Buka menu" aria-expanded="false"><span></span></button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section style="padding-top:56px;padding-bottom:0;">
+    <div class="wrap">
+      <span class="eyebrow" style="color:var(--accent-solid);font-size:0.9rem;font-weight:600;">Katalog</span>
+      <h1 style="font-size:clamp(1.9rem,4.5vw,2.8rem);margin-top:14px;max-width:20ch;">Layanan desain untuk setiap kebutuhan brand kamu.</h1>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="filter-bar">
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" id="serviceSearch" placeholder="Cari layanan, misalnya 'spanduk' atau 'logo'...">
+        </div>
+        <div class="filter-row">
+          <div class="chip-group" id="categoryChips"></div>
+          <select class="sort-select" id="sortSelect">
+            <option value="recommended">Rekomendasi</option>
+            <option value="price-asc">Harga: Rendah ke Tinggi</option>
+            <option value="price-desc">Harga: Tinggi ke Rendah</option>
+            <option value="az">A–Z</option>
+            <option value="newest">Terbaru</option>
+          </select>
+        </div>
+        <div class="results-meta" id="resultsMeta"></div>
+      </div>
+
+      <div class="grid" id="serviceGrid"></div>
+      <div class="empty-state" id="serviceEmptyState" style="display:none;">
+        <h3>Tidak ada layanan ditemukan</h3>
+        <p>Coba kata kunci lain atau reset filter kategori.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <span class="brand">FIXS<span>.ARTS</span></span>
+      <p data-setting="footerDescription">Studio desain kreatif untuk brand yang ingin tampil beda.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Jelajahi</h4>
+      <ul><li><a href="services.html">Layanan</a></li><li><a href="portfolio.html">Portfolio</a></li><li><a href="about.html">Tentang</a></li></ul>
+    </div>
+    <div class="footer-col">
+      <h4>Kontak</h4>
+      <ul>
+        <li><a data-setting-href="whatsapp" href="#">WhatsApp</a></li>
+        <li><a data-setting-href="email" href="#" data-setting="email">hello@fixsarts.studio</a></li>
+        <li><a data-setting-href="instagramUrl" href="#" target="_blank" rel="noopener">Instagram</a></li>
+      </ul>
+    </div>
+    <div class="footer-col"><h4>Lokasi</h4><ul><li data-setting="location">Jakarta, Indonesia</li></ul></div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span data-setting="copyrightText">© <span class="year"></span> Fixs.Arts Studio.</span>
+    <span>Dibuat dengan HTML, CSS & JavaScript murni.</span>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/search.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/app.js"></script>
+<script src="js/catalog.js"></script>
+</body>
+</html>
