@@ -53,6 +53,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
+  // ---- custom icons (search, cart, checkout, socials, etc) ----
+  // Each element carries its original emoji as both its content and a
+  // data-default fallback, so this only overrides when admin set something.
+  const icons = settings.icons || {};
+  Utils.qsa("[data-icon]").forEach(el => {
+    const key = el.dataset.icon;
+    const fallback = el.dataset.default || el.textContent;
+    el.innerHTML = Utils.renderIconHTML(icons[key] || fallback);
+  });
+
+  // ---- brand logo (image) instead of the "FIXS.ARTS" text wordmark ----
+  // Applies to every element with class "brand" (navbar + footer), so
+  // setting it once in Admin > Settings updates the whole site.
+  if (settings.logoUrl){
+    Utils.qsa(".brand").forEach(el => {
+      el.innerHTML = `<img src="${Utils.escapeHtml(settings.logoUrl)}" alt="${Utils.escapeHtml(settings.brandName || "Logo")}" class="brand-logo">`;
+    });
+  }
+
   // cart badge (Cart module already updates on DOMContentLoaded too,
   // this covers pages where cart.js loads after app.js)
   if (window.Cart) Cart.updateBadge();

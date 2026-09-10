@@ -77,7 +77,8 @@ const StorageManager = (function(){
   function loadSettings(){
     const stored = safeParse(localStorage.getItem(STORAGE_KEYS.settings), window.FixsData.settings);
     return Object.assign({}, window.FixsData.settings, stored, {
-      homepage: Object.assign({}, window.FixsData.settings.homepage, stored.homepage || {})
+      homepage: Object.assign({}, window.FixsData.settings.homepage, stored.homepage || {}),
+      icons: Object.assign({}, window.FixsData.settings.icons, stored.icons || {})
     });
   }
   function saveSettings(settings){

@@ -10,8 +10,17 @@
  * ---------------------------------------------------------
  */
 
-document.addEventListener("DOMContentLoaded", () => {
-  StorageManager.init();
+const ICON_FIELDS = [
+  { key: "search", label: "Icon Pencarian (halaman Layanan & Portfolio)" },
+  { key: "cart", label: "Icon Keranjang (navbar)" },
+  { key: "checkout", label: 'Icon Checkout (tombol "Lanjut ke Checkout")' },
+  { key: "whatsapp", label: "Icon WhatsApp (footer)" },
+  { key: "instagram", label: "Icon Instagram (footer)" },
+  { key: "email", label: "Icon Email (footer)" }
+];
+
+document.addEventListener("DOMContentLoaded", async () => {
+  await StorageManager.init();
 
   // ---------------- sidebar navigation ----------------
   const navButtons = Utils.qsa(".admin-nav-btn");
@@ -25,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (name === "portfolio") renderPortfolioTable();
     if (name === "homepage") fillHomepageForm();
     if (name === "settings") fillSettingsForm();
+    if (name === "icons") renderIconsForm();
   }
   navButtons.forEach(btn => btn.addEventListener("click", () => showPanel(btn.dataset.target)));
 
@@ -195,6 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const serviceForm = document.getElementById("serviceForm");
   let editingServiceId = null;
   let currentPackages = [];
+  let currentServiceGallery = []; // extra slide images, on top of the main "Gambar Utama"
 
   document.getElementById("addServiceBtn").addEventListener("click", () => openServiceEditor(null));
   document.getElementById("closeServiceModal").addEventListener("click", () => serviceModal.classList.remove("open"));
@@ -219,6 +230,12 @@ document.addEventListener("DOMContentLoaded", () => {
     currentPackages = service ? JSON.parse(JSON.stringify(service.packages || [])) : [];
     renderPackageEditor();
 
+    // gallery = every image besides the main one, used as extra slides
+    currentServiceGallery = service
+      ? (service.gallery || []).filter(g => g && g !== service.image)
+      : [];
+    renderServiceGalleryEditor();
+
     // image local preview / file select (dataURL) — local-only, see README
     const preview = document.getElementById("serviceImagePreview");
     preview.src = service ? service.image : "assets/images/placeholder.jpg";
@@ -233,6 +250,49 @@ document.addEventListener("DOMContentLoaded", () => {
     const dataUrl = await Utils.readFileAsDataURL(file);
     serviceForm.image.value = dataUrl;
     document.getElementById("serviceImagePreview").src = dataUrl;
+  });
+
+  // ---- gallery editor (extra slide images for service-detail.html) ----
+  function renderServiceGalleryEditor(){
+    const container = document.getElementById("serviceGalleryEditorList");
+    container.innerHTML = currentServiceGallery.map((src, index) => `
+      <div class="gallery-editor-row" data-index="${index}">
+        <img class="gallery-thumb" src="${Utils.escapeHtml(src || "assets/images/placeholder.jpg")}" onerror="this.src='assets/images/placeholder.jpg'">
+        <div class="form-field">
+          <label>Gambar tambahan ${index + 1}</label>
+          <input type="text" class="gallery-url-input" value="${Utils.escapeHtml(src)}" placeholder="assets/images/nama-file.jpg atau tempel URL">
+          <input type="file" class="gallery-file-input" accept="image/*">
+        </div>
+        <button type="button" class="btn btn-sm btn-outline admin-danger gallery-remove-btn">Hapus</button>
+      </div>
+    `).join("") || `<p class="admin-empty">Belum ada gambar tambahan. Klik "+ Tambah Gambar".</p>`;
+
+    Utils.qsa(".gallery-editor-row", container).forEach(row => {
+      const idx = Number(row.dataset.index);
+      const urlInput = row.querySelector(".gallery-url-input");
+      const thumb = row.querySelector(".gallery-thumb");
+      urlInput.addEventListener("input", () => {
+        currentServiceGallery[idx] = urlInput.value.trim();
+        thumb.src = urlInput.value.trim() || "assets/images/placeholder.jpg";
+      });
+      row.querySelector(".gallery-file-input").addEventListener("change", async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const dataUrl = await Utils.readFileAsDataURL(file);
+        currentServiceGallery[idx] = dataUrl;
+        urlInput.value = dataUrl;
+        thumb.src = dataUrl;
+      });
+      row.querySelector(".gallery-remove-btn").addEventListener("click", () => {
+        currentServiceGallery.splice(idx, 1);
+        renderServiceGalleryEditor();
+      });
+    });
+  }
+
+  document.getElementById("addServiceGalleryBtn").addEventListener("click", () => {
+    currentServiceGallery.push("");
+    renderServiceGalleryEditor();
   });
 
   function renderPackageEditor(){
@@ -288,7 +348,10 @@ document.addEventListener("DOMContentLoaded", () => {
       price: Number(serviceForm.price.value) || 0,
       priceLabel: serviceForm.priceLabel.value.trim() || "Mulai dari",
       image: serviceForm.image.value.trim() || "assets/images/placeholder.jpg",
-      gallery: [serviceForm.image.value.trim() || "assets/images/placeholder.jpg"],
+      gallery: Array.from(new Set([
+        serviceForm.image.value.trim() || "assets/images/placeholder.jpg",
+        ...currentServiceGallery.map(s => (s || "").trim()).filter(Boolean)
+      ])),
       tags: serviceForm.tags.value.split(",").map(t => t.trim()).filter(Boolean),
       featured: serviceForm.featured.checked,
       active: serviceForm.active.checked,
@@ -369,6 +432,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const portfolioModal = document.getElementById("portfolioModal");
   const portfolioForm = document.getElementById("portfolioForm");
   let editingPortfolioId = null;
+  let currentPortfolioGallery = []; // extra slide images, on top of the main "Gambar Utama"
 
   document.getElementById("addPortfolioBtn").addEventListener("click", () => openPortfolioEditor(null));
   document.getElementById("closePortfolioModal").addEventListener("click", () => portfolioModal.classList.remove("open"));
@@ -388,6 +452,11 @@ document.addEventListener("DOMContentLoaded", () => {
     portfolioForm.servicesUsed.value = item ? (item.servicesUsed || []).join(", ") : "";
     portfolioForm.featured.checked = item ? Boolean(item.featured) : false;
 
+    currentPortfolioGallery = item
+      ? (item.gallery || []).filter(g => g && g !== item.image)
+      : [];
+    renderPortfolioGalleryEditor();
+
     const preview = document.getElementById("portfolioImagePreview");
     preview.src = item ? item.image : "assets/portfolio/placeholder.jpg";
     preview.onerror = () => { preview.src = "assets/portfolio/placeholder.jpg"; };
@@ -403,6 +472,49 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("portfolioImagePreview").src = dataUrl;
   });
 
+  // ---- gallery editor (extra slide images for project-detail.html) ----
+  function renderPortfolioGalleryEditor(){
+    const container = document.getElementById("portfolioGalleryEditorList");
+    container.innerHTML = currentPortfolioGallery.map((src, index) => `
+      <div class="gallery-editor-row" data-index="${index}">
+        <img class="gallery-thumb" src="${Utils.escapeHtml(src || "assets/portfolio/placeholder.jpg")}" onerror="this.src='assets/portfolio/placeholder.jpg'">
+        <div class="form-field">
+          <label>Gambar tambahan ${index + 1}</label>
+          <input type="text" class="gallery-url-input" value="${Utils.escapeHtml(src)}" placeholder="assets/portfolio/nama-file.jpg atau tempel URL">
+          <input type="file" class="gallery-file-input" accept="image/*">
+        </div>
+        <button type="button" class="btn btn-sm btn-outline admin-danger gallery-remove-btn">Hapus</button>
+      </div>
+    `).join("") || `<p class="admin-empty">Belum ada gambar tambahan. Klik "+ Tambah Gambar".</p>`;
+
+    Utils.qsa(".gallery-editor-row", container).forEach(row => {
+      const idx = Number(row.dataset.index);
+      const urlInput = row.querySelector(".gallery-url-input");
+      const thumb = row.querySelector(".gallery-thumb");
+      urlInput.addEventListener("input", () => {
+        currentPortfolioGallery[idx] = urlInput.value.trim();
+        thumb.src = urlInput.value.trim() || "assets/portfolio/placeholder.jpg";
+      });
+      row.querySelector(".gallery-file-input").addEventListener("change", async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const dataUrl = await Utils.readFileAsDataURL(file);
+        currentPortfolioGallery[idx] = dataUrl;
+        urlInput.value = dataUrl;
+        thumb.src = dataUrl;
+      });
+      row.querySelector(".gallery-remove-btn").addEventListener("click", () => {
+        currentPortfolioGallery.splice(idx, 1);
+        renderPortfolioGalleryEditor();
+      });
+    });
+  }
+
+  document.getElementById("addPortfolioGalleryBtn").addEventListener("click", () => {
+    currentPortfolioGallery.push("");
+    renderPortfolioGalleryEditor();
+  });
+
   portfolioForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const portfolio = StorageManager.loadPortfolio();
@@ -414,7 +526,10 @@ document.addEventListener("DOMContentLoaded", () => {
       year: portfolioForm.year.value.trim(),
       description: portfolioForm.description.value.trim(),
       image: portfolioForm.image.value.trim() || "assets/portfolio/placeholder.jpg",
-      gallery: [portfolioForm.image.value.trim() || "assets/portfolio/placeholder.jpg"],
+      gallery: Array.from(new Set([
+        portfolioForm.image.value.trim() || "assets/portfolio/placeholder.jpg",
+        ...currentPortfolioGallery.map(s => (s || "").trim()).filter(Boolean)
+      ])),
       servicesUsed: portfolioForm.servicesUsed.value.split(",").map(s => s.trim()).filter(Boolean),
       featured: portfolioForm.featured.checked
     };
@@ -449,7 +564,41 @@ document.addEventListener("DOMContentLoaded", () => {
     homepageForm.ctaTitle.value = hp.ctaTitle;
     homepageForm.ctaDescription.value = hp.ctaDescription;
     homepageForm.ctaButton.value = hp.ctaButton;
+    homepageForm.heroMediaType.value = hp.heroMediaType || "shape";
+    homepageForm.heroMediaUrl.value = hp.heroMediaUrl || "";
+    renderHeroMediaPreview();
   }
+
+  // ---- hero banner (image/video/shape) preview ----
+  function renderHeroMediaPreview(){
+    const type = homepageForm.heroMediaType.value;
+    const url = homepageForm.heroMediaUrl.value.trim();
+    document.getElementById("heroMediaUrlField").style.display = type === "shape" ? "none" : "block";
+
+    const previewWrap = document.getElementById("heroMediaPreviewWrap");
+    if (type === "shape" || !url){
+      previewWrap.innerHTML = "";
+      return;
+    }
+    if (type === "video"){
+      previewWrap.innerHTML = `<video src="${Utils.escapeHtml(url)}" style="width:100%;max-width:320px;border-radius:10px;" controls muted></video>`;
+    } else {
+      previewWrap.innerHTML = `<img src="${Utils.escapeHtml(url)}" style="width:100%;max-width:320px;border-radius:10px;object-fit:cover;" onerror="this.style.display='none'">`;
+    }
+  }
+  homepageForm.heroMediaType.addEventListener("change", renderHeroMediaPreview);
+  homepageForm.heroMediaUrl.addEventListener("input", renderHeroMediaPreview);
+  document.getElementById("heroMediaFile").addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const dataUrl = await Utils.readFileAsDataURL(file);
+    homepageForm.heroMediaUrl.value = dataUrl;
+    if (homepageForm.heroMediaType.value === "shape"){
+      homepageForm.heroMediaType.value = file.type.startsWith("video") ? "video" : "image";
+    }
+    renderHeroMediaPreview();
+  });
+
   homepageForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const settings = StorageManager.loadSettings();
@@ -461,7 +610,9 @@ document.addEventListener("DOMContentLoaded", () => {
       secondaryButton: homepageForm.secondaryButton.value,
       ctaTitle: homepageForm.ctaTitle.value,
       ctaDescription: homepageForm.ctaDescription.value,
-      ctaButton: homepageForm.ctaButton.value
+      ctaButton: homepageForm.ctaButton.value,
+      heroMediaType: homepageForm.heroMediaType.value,
+      heroMediaUrl: homepageForm.heroMediaUrl.value.trim()
     };
     StorageManager.saveSettings(settings);
     Utils.showToast("Konten homepage disimpan.");
@@ -469,6 +620,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ================= SETTINGS =================
   const settingsForm = document.getElementById("settingsForm");
+
+  function updateLogoPreview(url){
+    const img = document.getElementById("logoPreviewImg");
+    const placeholder = document.getElementById("logoPreviewPlaceholder");
+    if (url){
+      img.src = url;
+      img.style.display = "block";
+      placeholder.style.display = "none";
+    } else {
+      img.style.display = "none";
+      placeholder.style.display = "block";
+    }
+  }
+
   function fillSettingsForm(){
     const s = StorageManager.loadSettings();
     settingsForm.brandName.value = s.brandName;
@@ -480,7 +645,19 @@ document.addEventListener("DOMContentLoaded", () => {
     settingsForm.footerDescription.value = s.footerDescription;
     settingsForm.copyrightText.value = s.copyrightText;
     settingsForm.currencySymbol.value = s.currencySymbol;
+    settingsForm.logoUrl.value = s.logoUrl || "";
+    updateLogoPreview(s.logoUrl);
   }
+
+  settingsForm.logoUrl.addEventListener("input", () => updateLogoPreview(settingsForm.logoUrl.value.trim()));
+  document.getElementById("logoFileInput").addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const dataUrl = await Utils.readFileAsDataURL(file);
+    settingsForm.logoUrl.value = dataUrl;
+    updateLogoPreview(dataUrl);
+  });
+
   settingsForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const s = StorageManager.loadSettings();
@@ -493,11 +670,54 @@ document.addEventListener("DOMContentLoaded", () => {
       location: settingsForm.location.value,
       footerDescription: settingsForm.footerDescription.value,
       copyrightText: settingsForm.copyrightText.value,
-      currencySymbol: settingsForm.currencySymbol.value
+      currencySymbol: settingsForm.currencySymbol.value,
+      logoUrl: settingsForm.logoUrl.value.trim()
     });
     StorageManager.saveSettings(s);
     Utils.showToast("Pengaturan disimpan.");
     renderDashboard();
+  });
+
+  // ================= ICONS =================
+  function renderIconsForm(){
+    const settings = StorageManager.loadSettings();
+    const icons = settings.icons || {};
+    const container = document.getElementById("iconFieldsContainer");
+    container.innerHTML = ICON_FIELDS.map(f => `
+      <div class="icon-field-card" data-key="${f.key}">
+        <label>${Utils.escapeHtml(f.label)}</label>
+        <div class="icon-field-preview">${Utils.renderIconHTML(icons[f.key] || "")}</div>
+        <input type="text" class="icon-value-input" value="${Utils.escapeHtml(icons[f.key] || "")}" placeholder="Emoji, teks, atau path gambar">
+        <input type="file" class="icon-file-input" accept="image/*">
+      </div>
+    `).join("");
+
+    Utils.qsa(".icon-field-card", container).forEach(card => {
+      const input = card.querySelector(".icon-value-input");
+      const preview = card.querySelector(".icon-field-preview");
+      input.addEventListener("input", () => {
+        preview.innerHTML = Utils.renderIconHTML(input.value.trim());
+      });
+      card.querySelector(".icon-file-input").addEventListener("change", async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const dataUrl = await Utils.readFileAsDataURL(file);
+        input.value = dataUrl;
+        preview.innerHTML = Utils.renderIconHTML(dataUrl);
+      });
+    });
+  }
+
+  document.getElementById("iconsForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const settings = StorageManager.loadSettings();
+    const icons = Object.assign({}, settings.icons);
+    Utils.qsa(".icon-field-card", document.getElementById("iconFieldsContainer")).forEach(card => {
+      icons[card.dataset.key] = card.querySelector(".icon-value-input").value.trim();
+    });
+    settings.icons = icons;
+    StorageManager.saveSettings(settings);
+    Utils.showToast("Icons disimpan.");
   });
 
   // ================= DATA MANAGEMENT =================
@@ -519,6 +739,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderPortfolioTable();
         fillSettingsForm();
         fillHomepageForm();
+        renderIconsForm();
       }
     };
     reader.readAsText(file);
@@ -538,6 +759,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderPortfolioTable();
     fillSettingsForm();
     fillHomepageForm();
+    renderIconsForm();
     Utils.showToast("Data dikembalikan ke default.");
   });
 

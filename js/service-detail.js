@@ -28,16 +28,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   const mainImg = document.getElementById("mainImage");
   const thumbRow = document.getElementById("thumbRow");
   const gallery = (service.gallery && service.gallery.length) ? service.gallery : [service.image];
+  let activeGalleryIndex = 0;
 
   mainImg.src = gallery[0];
   mainImg.alt = service.title;
   mainImg.onerror = () => { mainImg.src = "assets/images/placeholder.jpg"; };
+  mainImg.addEventListener("click", () => Lightbox.open(gallery, activeGalleryIndex));
 
   thumbRow.innerHTML = gallery.map((src, i) => `
-    <img src="${Utils.escapeHtml(src)}" class="${i === 0 ? "active" : ""}" data-src="${Utils.escapeHtml(src)}" onerror="this.src='assets/images/placeholder.jpg'">
+    <img src="${Utils.escapeHtml(src)}" class="${i === 0 ? "active" : ""}" data-src="${Utils.escapeHtml(src)}" data-index="${i}" onerror="this.src='assets/images/placeholder.jpg'">
   `).join("");
   Utils.qsa("img", thumbRow).forEach(thumb => {
     thumb.addEventListener("click", () => {
+      activeGalleryIndex = Number(thumb.dataset.index);
       mainImg.src = thumb.dataset.src;
       Utils.qsa("img", thumbRow).forEach(t => t.classList.remove("active"));
       thumb.classList.add("active");

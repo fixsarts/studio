@@ -107,8 +107,43 @@ const Utils = (function(){
     });
   }
 
+  // ---- icon helpers ----
+  // An icon "value" can be a short text/emoji ("🔍") or an image
+  // path/URL/data-URL uploaded via admin. This tells them apart.
+  function isImageValue(value){
+    if (!value) return false;
+    const v = String(value).trim();
+    if (v.startsWith("data:image")) return true;
+    if (/\.(png|jpe?g|svg|gif|webp)(\?.*)?$/i.test(v)) return true;
+    return false;
+  }
+
+  function renderIconHTML(value){
+    if (!value) return "";
+    if (isImageValue(value)) return `<img src="${escapeHtml(value)}" class="icon-img" alt="">`;
+    return escapeHtml(value);
+  }
+
+  // Reads settings.icons[key] (falling back to fallbackValue) and
+  // returns ready-to-insert HTML. Safe to call inside template strings
+  // anywhere after StorageManager.init() has resolved.
+  function getIcon(key, fallbackValue){
+    const icons = (window.StorageManager ? StorageManager.loadSettings().icons : null) || {};
+    return renderIconHTML(icons[key] || fallbackValue || "");
+  }
+
+  // Same idea but for the homepage hero banner (image/video/shape).
+  function isVideoValue(value){
+    if (!value) return false;
+    const v = String(value).trim();
+    if (v.startsWith("data:video")) return true;
+    if (/\.(mp4|webm|mov|ogg)(\?.*)?$/i.test(v)) return true;
+    return false;
+  }
+
   return {
     formatCurrency, generateId, getQueryParam, debounce,
-    qs, qsa, escapeHtml, showToast, confirmModal, readFileAsDataURL
+    qs, qsa, escapeHtml, showToast, confirmModal, readFileAsDataURL,
+    isImageValue, renderIconHTML, getIcon, isVideoValue
   };
 })();

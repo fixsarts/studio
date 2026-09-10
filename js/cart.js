@@ -132,7 +132,7 @@ const Cart = (function(){
       <h3>Ringkasan</h3>
       <div class="summary-row"><span>Jumlah item</span><span>${items.reduce((s,i)=>s+i.qty,0)}</span></div>
       <div class="summary-row total"><span>Total</span><span>${Utils.formatCurrency(total)}</span></div>
-      <a href="checkout.html" class="btn btn-primary btn-block" style="margin-top:20px;">Lanjut ke Checkout</a>
+      <a href="checkout.html" class="btn btn-primary btn-block" style="margin-top:20px;">${Utils.getIcon('checkout','✅')} Lanjut ke Checkout</a>
     `;
   }
 

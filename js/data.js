@@ -22,6 +22,21 @@ const DEFAULT_SETTINGS = {
   copyrightText: "© 2026 Fixs.Arts Studio. Seluruh hak cipta dilindungi.",
   currency: "IDR",
   currencySymbol: "Rp",
+  // Logo image shown in the header/footer instead of the "FIXS.ARTS" text
+  // wordmark. Leave empty to keep the text logo. Set from Admin > Settings.
+  logoUrl: "",
+  // Icon slots used across the site. Each value can be either a short
+  // text/emoji ("🔍") or an image path/URL/data-URL — the site auto-detects
+  // which one it is and renders accordingly. Edit these from
+  // Admin > Konfigurasi > Icons.
+  icons: {
+    search: "🔍",
+    cart: "🛍️",
+    checkout: "✅",
+    whatsapp: "💬",
+    instagram: "📷",
+    email: "✉️"
+  },
   homepage: {
     eyebrow: "Creative Design Studio",
     title: "Desain yang membuat brand kamu pantas dilihat dua kali.",
@@ -30,7 +45,12 @@ const DEFAULT_SETTINGS = {
     secondaryButton: "Lihat Portfolio",
     ctaTitle: "Siap membangun visual brand kamu?",
     ctaDescription: "Ceritakan kebutuhan desain kamu, tim kami bantu carikan paket yang paling pas.",
-    ctaButton: "Mulai Diskusi"
+    ctaButton: "Mulai Diskusi",
+    // Hero banner on the right side of the homepage hero section.
+    // heroMediaType: "shape" (default gradient card), "image", or "video".
+    // heroMediaUrl: path/URL/data-URL to the image or video file (ignored for "shape").
+    heroMediaType: "shape",
+    heroMediaUrl: ""
   }
 };
 

@@ -10,7 +10,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   await StorageManager.init();
 
-  const searchInput = document.getElementById("serviceSearch");
+  const searchInput = document.querySelector(".nav-search input[name='search']");
+  const searchForm = document.querySelector(".nav-search");
   const chipGroup = document.getElementById("categoryChips");
   const sortSelect = document.getElementById("sortSelect");
   const resultsMeta = document.getElementById("resultsMeta");
@@ -88,14 +89,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderGrid();
   }, 200));
 
+  // Already on services.html -> filter live instead of reloading the page.
+  searchForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    state.query = searchInput.value;
+    renderGrid();
+  });
+
   sortSelect.addEventListener("change", () => {
     state.sort = sortSelect.value;
     renderGrid();
   });
 
-  // support ?category= deep link from homepage
+  // support ?category= and ?search= deep links (e.g. from the header search
+  // on other pages, which submits to services.html?search=...)
   const preselectedCategory = Utils.getQueryParam("category");
   if (preselectedCategory) state.category = preselectedCategory;
+
+  const preselectedSearch = Utils.getQueryParam("search");
+  if (preselectedSearch){
+    state.query = preselectedSearch;
+    searchInput.value = preselectedSearch;
+  }
 
   renderChips();
   renderGrid();
