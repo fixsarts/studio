@@ -17,6 +17,11 @@
   .nav-menu li{width:100%;padding:14px 0;border-bottom:1px solid var(--border-soft);}
   .nav-menu li:last-child{border-bottom:none;}
   .nav-toggle{display:flex;}
+  .nav-search{padding:9px;border-radius:50%;}
+  .nav-search input{display:none;}
+}
+@media (max-width:400px){
+  .nav-actions{gap:10px;}
 }
 
 /* ---------- Tablet (>=640px) ---------- */
